@@ -1,5 +1,5 @@
-PROJECT_NAME           = "Multi-Agentes Set Covering"
-PROJECT_BRIEF          = "Experimento de sistemas multiagentes aplicados ao Set Covering"
+PROJECT_NAME           = "Multi-Agentes"
+PROJECT_BRIEF          = "Sistema multiagentes para otimizacao combinatoria"
 OUTPUT_DIRECTORY       = docs/doxygen
 INPUT                  = src
 RECURSIVE              = YES
