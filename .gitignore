@@ -1,2 +1,5 @@
 build
 Debug
+.cache/
+compile_commands.json
+docs/doxygen/

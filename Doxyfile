@@ -1,0 +1,16 @@
+PROJECT_NAME           = "Multi-Agentes Set Covering"
+PROJECT_BRIEF          = "Experimento de sistemas multiagentes aplicados ao Set Covering"
+OUTPUT_DIRECTORY       = docs/doxygen
+INPUT                  = src
+RECURSIVE              = YES
+FILE_PATTERNS          = *.c *.h
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_FOR_C  = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HAVE_DOT               = NO
+QUIET                  = YES

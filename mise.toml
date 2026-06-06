@@ -1,0 +1,57 @@
+[tools]
+cmake = "4.2.1"
+conan = "2.28.1"
+
+[env]
+CCACHE_DIR = "{{config_root}}/.cache/ccache"
+
+[tasks.configure]
+description = "Configura o projeto com CMake usando o decoder padrao TSP"
+run = "mkdir -p .cache/ccache && cmake -S . -B build -DMA_PROBLEM=tsp && ln -sf build/compile_commands.json compile_commands.json"
+
+[tasks."configure:rcmpsp"]
+description = "Configura o projeto usando o decoder RCMPSP"
+run = "mkdir -p .cache/ccache && cmake -S . -B build -DMA_PROBLEM=rcmpsp && ln -sf build/compile_commands.json compile_commands.json"
+
+[tasks."configure:tsp"]
+description = "Configura o projeto usando o decoder TSP"
+run = "mkdir -p .cache/ccache && cmake -S . -B build -DMA_PROBLEM=tsp && ln -sf build/compile_commands.json compile_commands.json"
+
+[tasks.build]
+description = "Compila o projeto com CMake"
+depends = ["configure"]
+run = "cmake --build build && ln -sf build/compile_commands.json compile_commands.json"
+
+[tasks."build:tsp"]
+description = "Configura e compila usando o decoder TSP"
+depends = ["configure:tsp"]
+run = "cmake --build build && ln -sf build/compile_commands.json compile_commands.json"
+
+[tasks."build:rcmpsp"]
+description = "Configura e compila usando o decoder RCMPSP"
+depends = ["configure:rcmpsp"]
+run = "cmake --build build && ln -sf build/compile_commands.json compile_commands.json"
+
+[tasks.run]
+description = "Compila e executa o programa principal"
+depends = ["build"]
+run = "./build/multi_agentes"
+
+[tasks."run:tsp"]
+description = "Compila e executa usando o decoder TSP"
+depends = ["build:tsp"]
+run = "./build/multi_agentes"
+
+[tasks."run:rcmpsp"]
+description = "Compila e executa usando o decoder RCMPSP"
+depends = ["build:rcmpsp"]
+run = "./build/multi_agentes"
+
+[tasks.docs]
+description = "Gera a documentacao Doxygen"
+depends = ["configure"]
+run = "cmake --build build --target docs"
+
+[tasks.clean]
+description = "Remove artefatos de build e documentacao gerada"
+run = "cmake -E rm -rf build docs/doxygen compile_commands.json"
