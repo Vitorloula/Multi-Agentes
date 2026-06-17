@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile_commands.json"
 
 set(MA_TRD_MAX_VERTICES 128 CACHE STRING "Maximum number of graph vertices for the TRD decoder")
 set(MA_POOL_SIZE 5 CACHE STRING "Number of solutions kept in the blackboard")
-set(MA_MAX_GLOBAL_ITERATIONS 80 CACHE STRING "Global search iteration limit")
+set(MA_MAX_GLOBAL_ITERATIONS 4000 CACHE STRING "Global search iteration limit")
 
 find_package(OpenMP REQUIRED)
 

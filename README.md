@@ -75,7 +75,7 @@ python3 scripts/run_experiments.py
 ```
 
 O script detecta automaticamente o maior numero de vertices nas instancias e
-reconfigura o CMake com `MA_TRD_MAX_VERTICES` adequado antes de compilar.
+ajusta o build antes de compilar.
 
 Saidas principais:
 
@@ -95,20 +95,31 @@ Para informar valores de PLI, AG ou melhor conhecido, passe um CSV com coluna
 python3 scripts/run_experiments.py --reference-csv referencias.csv
 ```
 
-## opcoes principais do cmake
+## parametros padrao dos algoritmos
 
-| opcao | padrao | descricao |
-| :--- | :--- | :--- |
-| `MA_TRD_MAX_VERTICES` | `128` | numero maximo de vertices aceito pelo decoder TRD |
-| `MA_POOL_SIZE` | `5` | tamanho da pool do blackboard |
-| `MA_MAX_GLOBAL_ITERATIONS` | `80` | limite de iteracoes dos agentes |
+Os parametros fechados ficam em `src/main.c`, no bloco `algorithm_params`.
+Eles foram definidos para ficar proximos aos valores calibrados por IRACE nas
+tabelas ACOR+TS e HHO+RVNS.
+
+| algoritmo | parametro | valor |
+| :--- | :--- | ---: |
+| Todos | threads por metaheuristica | `8` |
+| ACO | tamanho do arquivo (`archive_size`) | `200` |
+| ACO | numero de formigas (`n_ants`) | `200` |
+| ACO | pressao de selecao (`q`) | `0.8` |
+| ACO | escala da amostragem (`xi`) | `0.8` |
+| TS | tamanho da vizinhanca | `40` |
+| TS | tenure tabu | `30` |
+| TS | iteracoes internas por chamada | `1000` |
+| RVNS | maior vizinhanca (`k_max`) | `50` |
+| RVNS | iteracoes internas por chamada | `1000` |
+| HHO | numero de gavioes | `200` |
+| HHO | iteracoes internas por publicacao | `10` |
 
 Exemplo:
 
 ```sh
-cmake -S . -B build -DMA_TRD_MAX_VERTICES=500
-cmake --build build
-./build/multi_agentes caminho/para/grafo.txt
+python3 scripts/run_experiments.py
 ```
 
 ## adaptador de decoder

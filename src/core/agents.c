@@ -13,9 +13,39 @@
 #include "core/problem.h"
 
 #include <float.h>
+#include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
+static uint64_t splitmix64_next(uint64_t *state) {
+  uint64_t z = (*state += 0x9e3779b97f4a7c15ULL);
+  z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
+  z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
+  return z ^ (z >> 31);
+}
+
+static uint64_t default_run_seed(void) {
+  uint64_t state = (uint64_t)time(NULL);
+  state ^= (uint64_t)(uintptr_t)&state;
+  state ^= (uint64_t)(omp_get_wtime() * 1000000000.0);
+  return splitmix64_next(&state);
+}
+
+static uint64_t run_seed_from_env(void) {
+  const char *seed_text = getenv("MA_RUN_SEED");
+  if (seed_text == NULL || seed_text[0] == '\0') {
+    return default_run_seed();
+  }
+
+  char *end = NULL;
+  uint64_t seed = (uint64_t)strtoull(seed_text, &end, 10);
+  if (end == seed_text || *end != '\0') {
+    return default_run_seed();
+  }
+  return seed;
+}
 
 /**
  * @brief Avanca a sequencia de um gerador pseudoaleatorio.
@@ -51,7 +81,10 @@ void agent_context_init(agent_context *ctx, const agent *spec, blackboard *bb,
   ctx->best_time_seconds = 0.0;
   ctx->eval_dctx.ws = dctx->ws_clone(dctx->ws, dctx->user);
 
-  hscopt_rng_seed(&ctx->rng, spec->seed);
+  uint64_t seed_state = spec->seed_salt;
+  seed_state += run_seed_from_env();
+  ctx->seed = splitmix64_next(&seed_state);
+  hscopt_rng_seed(&ctx->rng, ctx->seed);
   jump_rng(&ctx->rng, spec->rng_jumps);
 }
 
@@ -110,25 +143,25 @@ int agent_consult_blackboard(agent_context *ctx, double *out_keys,
 int run_multi_agent_search(problem_instance *problem, blackboard *bb,
                            int max_global_iterations,
                            const algorithm_params *params) {
-static const agent agents[] = {
+  static const agent agents[] = {
       {.name = "ACO",
        .role = "exploracao global e injecao de solucoes compartilhadas",
-       .seed = 1111ULL,
+       .seed_salt = 1111ULL,
        .rng_jumps = 1,
        .run = aco_agent_run},
       {.name = "Tabu Search",
        .role = "intensificacao local sobre solucoes promissoras",
-       .seed = 2222ULL,
+       .seed_salt = 2222ULL,
        .rng_jumps = 2,
        .run = tabu_agent_run},
       {.name = "RVNS",
        .role = "diversificacao por vizinhancas variaveis",
-       .seed = 3333ULL,
+       .seed_salt = 3333ULL,
        .rng_jumps = 3,
        .run = rvns_agent_run},
       {.name = "HHO",
        .role = "convergencia guiada pela melhor solucao compartilhada",
-       .seed = 4444ULL,
+       .seed_salt = 4444ULL,
        .rng_jumps = 4,
        .run = hho_agent_run},
   };
@@ -155,9 +188,7 @@ static const agent agents[] = {
 
   puts("\nAgentes autonomos:");
   for (size_t i = 0; i < AGENT_COUNT; i++) {
-    printf("  - %s: %s | seed=%llu | rng_jumps=%d\n", contexts[i].name,
-           contexts[i].role, (unsigned long long)agents[i].seed,
-           agents[i].rng_jumps);
+    printf("  - %s: %s\n", contexts[i].name, contexts[i].role);
   }
 
   double run_start_time = omp_get_wtime();

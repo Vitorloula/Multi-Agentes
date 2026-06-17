@@ -11,12 +11,8 @@
 #include <omp.h>
 #include <stdio.h>
 
-/**
- * @brief Imprime parametros principais da execucao.
- */
 static void print_header(void) {
-  printf("Sistema multiagentes para %s\n", PROBLEM_NAME());
-  printf("Pool: %d | Iteracoes: %d\n\n", POOL_SIZE, MAX_GLOBAL_ITERATIONS);
+  printf("Sistema multiagentes para %s\n\n", PROBLEM_NAME());
 }
 
 /**
@@ -62,20 +58,22 @@ int main(int argc, char **argv) {
   blackboard bb;
   const int max_global_iterations = MAX_GLOBAL_ITERATIONS;
   const algorithm_params params = {
-      .aco_ant_count = 20,
-      .aco_candidate_count = 10,
-      .aco_evaporation = 0.1,
-      .aco_pheromone_weight = 1.0,
+      .max_threads = 8,
 
-      .tabu_neighborhood_size = 30,
-      .tabu_tenure = 7,
-      .tabu_inner_iterations = 10,
+      .aco_archive_size = 200,
+      .aco_ant_count = 200,
+      .aco_q = 0.8,
+      .aco_xi = 0.8,
 
-      .rvns_neighborhood_count = 3,
-      .rvns_inner_iterations = 8,
+      .tabu_neighborhood_size = 40,
+      .tabu_tenure = 30,
+      .tabu_inner_iterations = 1000,
 
-      .hho_population_size = 15,
-      .hho_inner_iterations = 3,
+      .rvns_neighborhood_count = 50,
+      .rvns_inner_iterations = 1000,
+
+      .hho_population_size = 200,
+      .hho_inner_iterations = 10,
   };
 
   if (!PROBLEM_INIT(&problem, argv[1])) {

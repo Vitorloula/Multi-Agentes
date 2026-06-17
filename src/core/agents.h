@@ -10,10 +10,12 @@
 #include "problem.h"
 
 typedef struct {
+  int max_threads;
+
+  int aco_archive_size;
   int aco_ant_count;
-  int aco_candidate_count;
-  double aco_evaporation;
-  double aco_pheromone_weight;
+  double aco_q;
+  double aco_xi;
 
   int tabu_neighborhood_size;
   int tabu_tenure;

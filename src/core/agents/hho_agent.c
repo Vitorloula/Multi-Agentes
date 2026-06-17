@@ -8,8 +8,8 @@
 void hho_agent_run(agent_context *ctx) {
   hscopt_hho_ctx *hho =
       hscopt_hho_create(PROBLEM_SIZE, ctx->params->hho_population_size,
-                        ctx->max_global_iterations, 1, ctx->decoder,
-                        ctx->dctx, &ctx->rng);
+                        ctx->max_global_iterations, ctx->params->max_threads,
+                        ctx->decoder, ctx->dctx, &ctx->rng);
   if (hho == NULL) {
     agent_request_stop(ctx);
     return;

@@ -44,6 +44,8 @@ typedef struct {
   double max_seconds;
   /** Gerador pseudoaleatorio exclusivo do agente. */
   hscopt_rng rng;
+  /** Semente efetiva usada para inicializar o RNG do agente. */
+  uint64_t seed;
   /** Quantidade de solucoes aceitas no blackboard por este agente. */
   int accepted_publications;
   /** Quantidade de consultas feitas por este agente ao blackboard. */
@@ -71,8 +73,8 @@ typedef struct {
   const char *name;
   /** Papel do agente no sistema multiagentes. */
   const char *role;
-  /** Semente base do gerador pseudoaleatorio local. */
-  uint64_t seed;
+  /** Sal usado para derivar a semente local do agente. */
+  uint64_t seed_salt;
   /** Saltos aplicados ao RNG para separar fluxos aleatorios. */
   int rng_jumps;
   /** Funcao que implementa a estrategia autonoma do agente. */
