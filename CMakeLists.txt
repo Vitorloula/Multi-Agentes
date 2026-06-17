@@ -16,7 +16,7 @@ set(MA_N_RESOURCES 3 CACHE STRING "Number of RCMPSP renewable resources")
 set(MA_RCMPSP_MAX_HORIZON 512 CACHE STRING "Scheduling horizon used by the RCMPSP decoder")
 set(MA_N_CITIES 50 CACHE STRING "Number of TSP cities")
 set(MA_POOL_SIZE 5 CACHE STRING "Number of solutions kept in the blackboard")
-set(MA_MAX_GLOBAL_ITERATIONS 80 CACHE STRING "Global search iteration limit")
+set(MA_MAX_GLOBAL_ITERATIONS 4000 CACHE STRING "Global search iteration limit")
 
 math(EXPR MA_PROJECT_ACTIVITY_COUNT "${MA_PROJECT_REAL_ACTIVITIES} + 2")
 math(EXPR MA_N_ACTIVITIES "2 + (${MA_N_PROJECTS} * ${MA_PROJECT_ACTIVITY_COUNT})")

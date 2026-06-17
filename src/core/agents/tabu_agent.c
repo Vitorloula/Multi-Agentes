@@ -8,8 +8,9 @@
 void tabu_agent_run(agent_context *ctx) {
   hscopt_ts_ctx *ts =
       hscopt_ts_create(PROBLEM_SIZE, ctx->params->tabu_neighborhood_size,
-                       ctx->params->tabu_tenure, ctx->max_global_iterations, 1,
-                       ctx->decoder, ctx->dctx, &ctx->rng, NULL);
+                       ctx->params->tabu_tenure, ctx->max_global_iterations,
+                       ctx->params->max_threads, ctx->decoder, ctx->dctx,
+                       &ctx->rng, NULL);
   if (ts == NULL) {
     return;
   }

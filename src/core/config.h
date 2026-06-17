@@ -103,7 +103,7 @@
  * @brief Limite global de iteracoes usado pelos agentes de busca.
  */
 #ifndef MAX_GLOBAL_ITERATIONS
-#define MAX_GLOBAL_ITERATIONS 80
+#define MAX_GLOBAL_ITERATIONS 4000
 #endif
 
 #endif

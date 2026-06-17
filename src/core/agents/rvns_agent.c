@@ -8,8 +8,8 @@
 void rvns_agent_run(agent_context *ctx) {
   hscopt_rvns_ctx *rvns =
       hscopt_rvns_create(PROBLEM_SIZE, ctx->params->rvns_neighborhood_count,
-                         ctx->max_global_iterations, 1, ctx->decoder,
-                         ctx->dctx, &ctx->rng, NULL);
+                         ctx->max_global_iterations, ctx->params->max_threads,
+                         ctx->decoder, ctx->dctx, &ctx->rng, NULL);
   if (rvns == NULL) {
     return;
   }

@@ -19,6 +19,7 @@ import csv
 import math
 import os
 import re
+import secrets
 import statistics
 import subprocess
 import sys
@@ -217,6 +218,8 @@ def run_once(
     )
 
     env = os.environ.copy()
+    run_seed = secrets.randbits(64)
+    env["MA_RUN_SEED"] = str(run_seed)
     env["MA_AGENT_METRICS_FILE"] = str(agent_path)
     env["MA_CONVERGENCE_FILE"] = str(convergence_path)
     env["MA_MAX_SECONDS"] = str(timeout_seconds)
