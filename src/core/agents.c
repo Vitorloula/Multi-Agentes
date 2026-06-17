@@ -12,8 +12,10 @@
 #include "core/agents/agent.h"
 #include "core/problem.h"
 
+#include <float.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief Avanca a sequencia de um gerador pseudoaleatorio.
@@ -29,7 +31,8 @@ static void jump_rng(hscopt_rng *rng, int jumps) {
 
 void agent_context_init(agent_context *ctx, const agent *spec, blackboard *bb,
                         hscopt_decode_ctx *dctx, int *stop_criterion_met,
-                        int max_global_iterations) {
+                        int max_global_iterations,
+                        const algorithm_params *params) {
   ctx->name = spec->name;
   ctx->role = spec->role;
   ctx->bb = bb;
@@ -38,9 +41,14 @@ void agent_context_init(agent_context *ctx, const agent *spec, blackboard *bb,
   ctx->eval_dctx = *dctx;
   ctx->stop_criterion_met = stop_criterion_met;
   ctx->max_global_iterations = max_global_iterations;
+  ctx->params = params;
   ctx->accepted_publications = 0;
   ctx->consultations = 0;
   ctx->shared_reads = 0;
+  ctx->run_start_time = 0.0;
+  ctx->max_seconds = 0.0;
+  ctx->best_fitness = DBL_MAX;
+  ctx->best_time_seconds = 0.0;
   ctx->eval_dctx.ws = dctx->ws_clone(dctx->ws, dctx->user);
 
   hscopt_rng_seed(&ctx->rng, spec->seed);
@@ -58,6 +66,9 @@ int agent_should_stop(const agent_context *ctx) {
   int stop = 0;
 #pragma omp atomic read
   stop = *ctx->stop_criterion_met;
+  if (!stop && ctx->max_seconds > 0.0 && ctx->run_start_time > 0.0) {
+    stop = (omp_get_wtime() - ctx->run_start_time) >= ctx->max_seconds;
+  }
   return stop;
 }
 
@@ -70,9 +81,15 @@ int agent_publish(agent_context *ctx, const double *keys, double fitness) {
   (void)fitness;
 
   double checked_fitness = ctx->decoder(keys, PROBLEM_SIZE, &ctx->eval_dctx);
+  double elapsed_seconds = omp_get_wtime() - ctx->run_start_time;
+  if (checked_fitness < ctx->best_fitness) {
+    ctx->best_fitness = checked_fitness;
+    ctx->best_time_seconds = elapsed_seconds;
+  }
 
-  int accepted =
-      blackboard_publish(ctx->bb, keys, checked_fitness, ctx->name);
+  int new_global_best = 0;
+  int accepted = blackboard_publish(ctx->bb, keys, checked_fitness, ctx->name,
+                                    elapsed_seconds, &new_global_best);
   if (accepted) {
     ctx->accepted_publications++;
   }
@@ -91,7 +108,8 @@ int agent_consult_blackboard(agent_context *ctx, double *out_keys,
 }
 
 int run_multi_agent_search(problem_instance *problem, blackboard *bb,
-                           int max_global_iterations) {
+                           int max_global_iterations,
+                           const algorithm_params *params) {
 static const agent agents[] = {
       {.name = "ACO",
        .role = "exploracao global e injecao de solucoes compartilhadas",
@@ -132,7 +150,7 @@ static const agent agents[] = {
   agent_context contexts[AGENT_COUNT];
   for (size_t i = 0; i < AGENT_COUNT; i++) {
     agent_context_init(&contexts[i], &agents[i], bb, &dctx,
-                       &stop_criterion_met, max_global_iterations);
+                       &stop_criterion_met, max_global_iterations, params);
   }
 
   puts("\nAgentes autonomos:");
@@ -140,6 +158,17 @@ static const agent agents[] = {
     printf("  - %s: %s | seed=%llu | rng_jumps=%d\n", contexts[i].name,
            contexts[i].role, (unsigned long long)agents[i].seed,
            agents[i].rng_jumps);
+  }
+
+  double run_start_time = omp_get_wtime();
+  double max_seconds = 0.0;
+  const char *max_seconds_env = getenv("MA_MAX_SECONDS");
+  if (max_seconds_env != NULL && max_seconds_env[0] != '\0') {
+    max_seconds = atof(max_seconds_env);
+  }
+  for (size_t i = 0; i < AGENT_COUNT; i++) {
+    contexts[i].run_start_time = run_start_time;
+    contexts[i].max_seconds = max_seconds;
   }
 
 #pragma omp parallel sections shared(contexts)
@@ -159,9 +188,25 @@ static const agent agents[] = {
 
   puts("\nResumo individual dos agentes:");
   for (size_t i = 0; i < AGENT_COUNT; i++) {
-    printf("  %s: publicacoes=%d | consultas=%d | leituras_compartilhadas=%d\n",
+    printf("  %s: publicacoes=%d | consultas=%d | leituras_compartilhadas=%d "
+           "| melhor=%.2f | tempo_melhor=%.6fs\n",
            contexts[i].name, contexts[i].accepted_publications,
-           contexts[i].consultations, contexts[i].shared_reads);
+           contexts[i].consultations, contexts[i].shared_reads,
+           contexts[i].best_fitness, contexts[i].best_time_seconds);
+  }
+
+  const char *agent_metrics_path = getenv("MA_AGENT_METRICS_FILE");
+  if (agent_metrics_path != NULL && agent_metrics_path[0] != '\0') {
+    FILE *agent_metrics = fopen(agent_metrics_path, "a");
+    if (agent_metrics != NULL) {
+      for (size_t i = 0; i < AGENT_COUNT; i++) {
+        fprintf(agent_metrics, "%s,%d,%d,%d,%.9f,%.9f\n", contexts[i].name,
+                contexts[i].accepted_publications, contexts[i].consultations,
+                contexts[i].shared_reads, contexts[i].best_fitness,
+                contexts[i].best_time_seconds);
+      }
+      fclose(agent_metrics);
+    }
   }
 
   for (size_t i = 0; i < AGENT_COUNT; i++) {

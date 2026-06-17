@@ -7,8 +7,9 @@
 
 void rvns_agent_run(agent_context *ctx) {
   hscopt_rvns_ctx *rvns =
-      hscopt_rvns_create(PROBLEM_SIZE, 3, ctx->max_global_iterations, 1,
-                         ctx->decoder, ctx->dctx, &ctx->rng, NULL);
+      hscopt_rvns_create(PROBLEM_SIZE, ctx->params->rvns_neighborhood_count,
+                         ctx->max_global_iterations, 1, ctx->decoder,
+                         ctx->dctx, &ctx->rng, NULL);
   if (rvns == NULL) {
     return;
   }
@@ -18,7 +19,7 @@ void rvns_agent_run(agent_context *ctx) {
     double seed_keys[PROBLEM_SIZE];
     agent_consult_blackboard(ctx, seed_keys, 0);
     hscopt_rvns_reset(rvns, seed_keys);
-    hscopt_rvns_iterate(rvns, 8);
+    hscopt_rvns_iterate(rvns, ctx->params->rvns_inner_iterations);
 
     double fit = hscopt_rvns_best_fitness(rvns);
     const double *keys = hscopt_rvns_best_keys(rvns);

@@ -40,6 +40,10 @@ typedef struct {
   int total_consultations;
   /** Quantidade de consultas respondidas com solucoes ja publicadas. */
   int shared_solution_reads;
+  /** Melhor custo global ja aceito no blackboard. */
+  double best_fitness;
+  /** Tempo, em segundos, ate a primeira ocorrencia do melhor custo global. */
+  double best_time_seconds;
   /** Trava usada para proteger leituras e escritas concorrentes. */
   omp_lock_t lock;
 } blackboard;
@@ -71,7 +75,8 @@ void blackboard_destroy(blackboard *bb);
  * @return 1 quando a pool foi atualizada, 0 caso contrario.
  */
 int blackboard_publish(blackboard *bb, const double *keys, double fitness,
-                       const char *agent_name);
+                       const char *agent_name, double elapsed_seconds,
+                       int *new_global_best);
 
 /**
  * @brief Obtem uma solucao do blackboard para alimentar um agente.
