@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.12)
-project(MultiAgentes C)
+project(MultiAgentes C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile_commands.json" FORCE)
 
-set(MA_PROBLEM "tsp" CACHE STRING "Active problem decoder: tsp or rcmpsp")
-set_property(CACHE MA_PROBLEM PROPERTY STRINGS rcmpsp tsp)
+set(MA_PROBLEM "tsp" CACHE STRING "Active problem decoder: tsp, rcmpsp or trd")
+set_property(CACHE MA_PROBLEM PROPERTY STRINGS rcmpsp tsp trd)
+set(MA_TRD_MAX_VERTICES 1000 CACHE STRING "Max vertex count for TRD")
 set(MA_N_PROJECTS 4 CACHE STRING "Number of RCMPSP projects")
 set(MA_PROJECT_REAL_ACTIVITIES 8 CACHE STRING "Number of real activities per RCMPSP project")
 set(MA_N_RESOURCES 3 CACHE STRING "Number of RCMPSP renewable resources")
@@ -24,11 +27,15 @@ if (MA_PROBLEM STREQUAL "tsp")
 elseif (MA_PROBLEM STREQUAL "rcmpsp")
   set(MA_ACTIVE_PROBLEM_DEFINE ACTIVE_PROBLEM_RCMPSP=1)
   math(EXPR MA_PROBLEM_SIZE "2 * ${MA_N_ACTIVITIES}")
+elseif (MA_PROBLEM STREQUAL "trd")
+  set(MA_ACTIVE_PROBLEM_DEFINE ACTIVE_PROBLEM_TRD=1)
+  set(MA_PROBLEM_SIZE ${MA_TRD_MAX_VERTICES})
 else()
-  message(FATAL_ERROR "MA_PROBLEM must be 'rcmpsp' or 'tsp'")
+  message(FATAL_ERROR "MA_PROBLEM must be 'rcmpsp', 'tsp' or 'trd'")
 endif()
 
 find_package(OpenMP REQUIRED)
+find_package(Boost REQUIRED)
 
 add_subdirectory(external/hscopt)
 
@@ -51,10 +58,16 @@ add_library(multi_agentes_core STATIC
   src/core/rcmpsp_decoder.c
   src/core/tsp.c
   src/core/tsp_decoder.c
+  src/core/trd/ListGraph.cpp
+  src/core/trd/MatrixGraph.cpp
+  src/core/trd/Chromosome.cpp
+  src/core/trd/trd.cpp
+  src/core/trd/trd_decoder.cpp
 )
 
 target_include_directories(multi_agentes_core PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${Boost_INCLUDE_DIRS}
 )
 
 target_compile_definitions(multi_agentes_core PUBLIC
@@ -66,6 +79,7 @@ target_compile_definitions(multi_agentes_core PUBLIC
   N_RESOURCES=${MA_N_RESOURCES}
   RCMPSP_MAX_HORIZON=${MA_RCMPSP_MAX_HORIZON}
   N_CITIES=${MA_N_CITIES}
+  MA_TRD_MAX_VERTICES=${MA_TRD_MAX_VERTICES}
   PROBLEM_SIZE=${MA_PROBLEM_SIZE}
   POOL_SIZE=${MA_POOL_SIZE}
   MAX_GLOBAL_ITERATIONS=${MA_MAX_GLOBAL_ITERATIONS}
@@ -74,6 +88,7 @@ target_compile_definitions(multi_agentes_core PUBLIC
 target_link_libraries(multi_agentes_core PUBLIC
   hscopt::hscopt
   OpenMP::OpenMP_C
+  OpenMP::OpenMP_CXX
 )
 
 if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
@@ -102,3 +117,23 @@ if (DOXYGEN_FOUND)
     VERBATIM
   )
 endif()
+
+# Alvo para compilar o BRKGA puro original para fins de comparacao cientifica
+add_executable(total_rd_brkga_executable
+  total_rd_brkga/src/main.cpp
+  total_rd_brkga/src/Chromosome.cpp
+  total_rd_brkga/src/ListGraph.cpp
+  total_rd_brkga/src/MatrixGraph.cpp
+  total_rd_brkga/lib/brkgaAPI/Population.cpp
+)
+
+target_include_directories(total_rd_brkga_executable PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/total_rd_brkga/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/total_rd_brkga/lib/brkgaAPI
+  ${Boost_INCLUDE_DIRS}
+)
+
+target_link_libraries(total_rd_brkga_executable PRIVATE
+  OpenMP::OpenMP_CXX
+)
+

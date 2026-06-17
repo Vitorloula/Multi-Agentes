@@ -117,7 +117,7 @@ static const agent agents[] = {
   enum { AGENT_COUNT = sizeof(agents) / sizeof(agents[0]) };
 
   problem_workspace ws_base;
-  if (!PROBLEM_WORKSPACE_INIT(&ws_base)) {
+  if (!PROBLEM_WORKSPACE_INIT(&ws_base, problem)) {
     return 0;
   }
 

@@ -65,6 +65,10 @@
 #define N_CITIES 50
 #endif
 
+#ifndef MA_TRD_MAX_VERTICES
+#define MA_TRD_MAX_VERTICES 256
+#endif
+
 /**
  * @brief Quantidade de chaves aleatorias usadas pelo problema principal.
  *
@@ -74,6 +78,8 @@
 #ifndef PROBLEM_SIZE
 #if defined(ACTIVE_PROBLEM_TSP)
 #define PROBLEM_SIZE N_CITIES
+#elif defined(ACTIVE_PROBLEM_TRD)
+#define PROBLEM_SIZE MA_TRD_MAX_VERTICES
 #else
 #define PROBLEM_SIZE (2 * N_ACTIVITIES)
 #endif

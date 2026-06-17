@@ -51,12 +51,32 @@ static void print_results(const blackboard *bb, const problem_instance *problem,
   }
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
   problem_instance problem;
   blackboard bb;
   const int max_global_iterations = MAX_GLOBAL_ITERATIONS;
 
-  PROBLEM_INIT(&problem);
+  const char *instance_path = NULL;
+#if defined(ACTIVE_PROBLEM_TRD)
+  if (argc > 1) {
+    instance_path = argv[1];
+  } else {
+    instance_path = "total_rd_brkga/data/edges/BANCO - Miscellaneous Networks/GD01_b.txt";
+  }
+#else
+  (void)argc;
+  (void)argv;
+#endif
+
+  PROBLEM_INIT(&problem, instance_path);
+  
+#if defined(ACTIVE_PROBLEM_TRD)
+  if (problem.order == 0) {
+    fprintf(stderr, "Erro ao carregar a instancia de grafo: %s\n", instance_path);
+    return 1;
+  }
+#endif
+
   blackboard_init(&bb);
 
   print_header();
@@ -67,11 +87,18 @@ int main(void) {
   if (!search_ok) {
     fprintf(stderr, "Falha ao inicializar recursos da busca multi-agentes.\n");
     blackboard_destroy(&bb);
+#if defined(ACTIVE_PROBLEM_TRD)
+    trd_destroy_instance(&problem);
+#endif
     return 1;
   }
 
   print_results(&bb, &problem, end_time - start_time);
   blackboard_destroy(&bb);
+
+#if defined(ACTIVE_PROBLEM_TRD)
+  trd_destroy_instance(&problem);
+#endif
 
   return 0;
 }
