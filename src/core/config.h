@@ -66,7 +66,7 @@
 #endif
 
 #ifndef MA_TRD_MAX_VERTICES
-#define MA_TRD_MAX_VERTICES 256
+#define MA_TRD_MAX_VERTICES 3000
 #endif
 
 /**

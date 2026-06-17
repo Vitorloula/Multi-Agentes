@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile_commands.json"
 
 set(MA_PROBLEM "trd" CACHE STRING "Active problem decoder: tsp, rcmpsp or trd")
 set_property(CACHE MA_PROBLEM PROPERTY STRINGS rcmpsp tsp trd)
-set(MA_TRD_MAX_VERTICES 1000 CACHE STRING "Max vertex count for TRD")
+set(MA_TRD_MAX_VERTICES 3000 CACHE STRING "Max vertex count for TRD")
 set(MA_N_PROJECTS 4 CACHE STRING "Number of RCMPSP projects")
 set(MA_PROJECT_REAL_ACTIVITIES 8 CACHE STRING "Number of real activities per RCMPSP project")
 set(MA_N_RESOURCES 3 CACHE STRING "Number of RCMPSP renewable resources")

@@ -32,7 +32,7 @@ const { execSync } = require('child_process');
 
 // Configurações do experimento
 const EXECUTABLE_PATH = path.join('.', 'build', 'multi_agentes.exe');
-const DATA_DIR = path.join('total_rd_brkga', 'data', 'edges', 'BANCO - Miscellaneous Networks');
+const DATA_DIR = path.join('total_rd_brkga', 'data', 'edges', 'Random cubic graphs');
 const OUTPUT_CSV = 'resultados_trd_multiagentes.csv';
 const RUNS_PER_INSTANCE = 10; // Para fins acadêmicos rigorosos, recomenda-se 30
 

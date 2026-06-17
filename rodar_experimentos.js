@@ -4,18 +4,12 @@ const { execSync } = require('child_process');
 
 const SMA_EXECUTABLE = path.join('.', 'build', 'multi_agentes.exe');
 const BRKGA_EXECUTABLE = path.join('.', 'build', 'total_rd_brkga_executable.exe');
-const DATA_DIR = path.join('total_rd_brkga', 'data', 'edges', 'BANCO - Miscellaneous Networks');
+const DATA_DIR = path.join('total_rd_brkga', 'data', 'edges', 'Random cubic graphs');
 const OUTPUT_CSV = 'resultados_trd_comparativo.csv';
 const RUNS_PER_INSTANCE = 10; // Para fins acadêmicos rigorosos, recomenda-se 30
-
 function runExperiments() {
   if (!fs.existsSync(SMA_EXECUTABLE)) {
     console.error(`Erro: O executável SMA '${SMA_EXECUTABLE}' não existe. Compile o projeto primeiro.`);
-    process.exit(1);
-  }
-
-  if (!fs.existsSync(BRKGA_EXECUTABLE)) {
-    console.error(`Erro: O executável BRKGA '${BRKGA_EXECUTABLE}' não existe. Compile o projeto primeiro.`);
     process.exit(1);
   }
 
@@ -29,7 +23,7 @@ function runExperiments() {
     .sort();
 
   console.log(`Encontradas ${instances.length} instâncias.`);
-  console.log(`Iniciando experimentos comparativos (rodadas por instância: ${RUNS_PER_INSTANCE})...\n`);
+  console.log(`Iniciando experimentos do Sistema Multiagentes (rodadas por instância: ${RUNS_PER_INSTANCE})...\n`);
 
   const csvLines = [[
     'Instancia', 'Vertices', 'Arestas', 'Densidade',
@@ -94,72 +88,26 @@ function runExperiments() {
       continue;
     }
 
-    // --- 2. Rodar BRKGA Puro ---
-    const tempCsvPath = `brkga_temp_${inst}.csv`;
-    if (fs.existsSync(tempCsvPath)) {
-      fs.unlinkSync(tempCsvPath);
-    }
+    const bestSma = Math.min(...smaCosts);
+    const avgSma = smaCosts.reduce((a, b) => a + b, 0) / smaCosts.length;
+    const timeSma = smaTimes.reduce((a, b) => a + b, 0) / smaTimes.length;
+    const validationSma = smaValidationOk ? 'OK' : 'ERRO';
 
-    const brkgaCosts = [];
-    const brkgaTimes = [];
+    csvLines.push([
+      inst,
+      numVertices,
+      numEdges,
+      density.toFixed(6),
+      bestSma.toFixed(2),
+      avgSma.toFixed(2),
+      timeSma.toFixed(4),
+      '', // Deixado vazio para o BRKGA
+      '',
+      '',
+      validationSma
+    ]);
 
-    try {
-      // Executa o BRKGA puro para rodar os trials e gerar o CSV temporário
-      execSync(`"${BRKGA_EXECUTABLE}" "${instPath}" --trials ${RUNS_PER_INSTANCE} --output "${tempCsvPath}"`, { stdio: 'ignore' });
-
-      if (fs.existsSync(tempCsvPath)) {
-        const content = fs.readFileSync(tempCsvPath, 'utf8');
-        const lines = content.trim().split('\n');
-        // A primeira linha é o cabeçalho
-        for (let i = 1; i < lines.length; i++) {
-          const parts = lines[i].split(',');
-          if (parts.length >= 5) {
-            // fitness_value é a quarta coluna (index 3)
-            brkgaCosts.push(parseFloat(parts[3]));
-            // elapsed_time(microseconds) é a quinta coluna (index 4)
-            // Convertendo microsegundos para segundos
-            brkgaTimes.push(parseFloat(parts[4]) / 1000000.0);
-          }
-        }
-        fs.unlinkSync(tempCsvPath);
-      }
-    } catch (err) {
-      console.error(`Erro ao executar BRKGA para ${inst}:`, err.message);
-      if (fs.existsSync(tempCsvPath)) {
-        fs.unlinkSync(tempCsvPath);
-      }
-    }
-
-    if (brkgaCosts.length > 0) {
-      const bestSma = Math.min(...smaCosts);
-      const avgSma = smaCosts.reduce((a, b) => a + b, 0) / smaCosts.length;
-      const timeSma = smaTimes.reduce((a, b) => a + b, 0) / smaTimes.length;
-
-      const bestBrkga = Math.min(...brkgaCosts);
-      const avgBrkga = brkgaCosts.reduce((a, b) => a + b, 0) / brkgaCosts.length;
-      const timeBrkga = brkgaTimes.reduce((a, b) => a + b, 0) / brkgaTimes.length;
-
-      const validationSma = smaValidationOk ? 'OK' : 'ERRO';
-
-      csvLines.push([
-        inst,
-        numVertices,
-        numEdges,
-        density.toFixed(6),
-        bestSma.toFixed(2),
-        avgSma.toFixed(2),
-        timeSma.toFixed(4),
-        bestBrkga.toFixed(2),
-        avgBrkga.toFixed(2),
-        timeBrkga.toFixed(4),
-        validationSma
-      ]);
-
-      console.log(` -> SMA   | Melhor: ${bestSma} | Média: ${avgSma.toFixed(2)} | Tempo: ${timeSma.toFixed(4)}s | Validação: ${validationSma}`);
-      console.log(` -> BRKGA | Melhor: ${bestBrkga} | Média: ${avgBrkga.toFixed(2)} | Tempo: ${timeBrkga.toFixed(4)}s`);
-    } else {
-      console.warn(`Aviso: Nenhuma saída coletada do BRKGA para a instância ${inst}`);
-    }
+    console.log(` -> SMA | Melhor: ${bestSma} | Média: ${avgSma.toFixed(2)} | Tempo: ${timeSma.toFixed(4)}s | Validação: ${validationSma}`);
   }
 
   const csvContent = csvLines.map(line => line.join(',')).join('\n');

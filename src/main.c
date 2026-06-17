@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
   if (argc > 1) {
     instance_path = argv[1];
   } else {
-    instance_path = "total_rd_brkga/data/edges/BANCO - Miscellaneous Networks/GD01_b.txt";
+    instance_path = "total_rd_brkga/data/edges/Random cubic graphs/cubic_100.txt";
   }
 #else
   (void)argc;

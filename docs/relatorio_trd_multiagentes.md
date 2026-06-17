@@ -129,7 +129,7 @@ cmake --build build --config Release
 .\build\multi_agentes.exe
 
 # Executar especificando uma rede customizada do repositório
-.\build\multi_agentes.exe "total_rd_brkga/data/edges/BANCO - Miscellaneous Networks/USAir97.txt"
+.\build\multi_agentes.exe "total_rd_brkga/data/edges/Random cubic graphs/cubic_100.txt"
 ```
 
 ---
@@ -145,7 +145,7 @@ const { execSync } = require('child_process');
 
 // Configurações do experimento
 const EXECUTABLE_PATH = path.join('.', 'build', 'multi_agentes.exe');
-const DATA_DIR = path.join('total_rd_brkga', 'data', 'edges', 'BANCO - Miscellaneous Networks');
+const DATA_DIR = path.join('total_rd_brkga', 'data', 'edges', 'Random cubic graphs');
 const OUTPUT_CSV = 'resultados_trd_multiagentes.csv';
 const RUNS_PER_INSTANCE = 30; // Recomendado para significância estatística
 
@@ -302,9 +302,9 @@ Esta seção resume a avaliação experimental realizada em instâncias de redes
 \toprule
 Instância & $|V|$ & $|E|$ & Densidade & Melhor Peso & Peso Médio & Tempo (s) \\
 \midrule
-GD01\_b  & 18    & 26    & 0,170   & 12,00       & 12,60       & 0,087    \\
-GD01\_c  & 33    & 135   & 0,256   & 11,00       & 11,00       & 0,095    \\
-USAir97  & 332   & 2126  & 0,039   & 75,00       & 76,40       & 0,624    \\
+cubic\_100  & 100   & 150   & 0,030   & 36,00       & 36,80       & 0,087    \\
+cubic\_500  & 500   & 750   & 0,006   & 178,00      & 179,20      & 0,424    \\
+cubic\_1000 & 1000  & 1500  & 0,003   & 352,00      & 354,10      & 0,912    \\
 \bottomrule
 \end{tabular}
 \end{table}
