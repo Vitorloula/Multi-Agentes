@@ -1,0 +1,75 @@
+Carregando grafo de D:\Multi Agentes\total_rd_brkga\data\edges\Random cubic graphs\cubic_1900.txt com 1900 vertices e 2850 arestas (densidade: 0.00157978)...
+Usando representacao com lista de adjacencia (grafo esparso).
+Sistema multiagentes para Total Roman Domination (TRD)
+
+
+Agentes autonomos:
+  - ACO: exploracao global e injecao de solucoes compartilhadas
+  - Tabu Search: intensificacao local sobre solucoes promissoras
+  - RVNS: diversificacao por vizinhancas variaveis
+  - HHO: convergencia guiada pela melhor solucao compartilhada
+[RVNS] publicou 2144.00 no blackboard (pool: 1, t=0.006000s)
+[Tabu Search] publicou 2106.00 no blackboard (pool: 2, t=0.006000s)
+[Tabu Search] publicou 2108.00 no blackboard (pool: 3, t=0.009000s)
+[RVNS] publicou 2146.00 no blackboard (pool: 4, t=0.009000s)
+[Tabu Search] publicou 2110.00 no blackboard (pool: 5, t=0.011000s)
+[RVNS] publicou 2141.00 no blackboard (pool: 5, t=0.012000s)
+[RVNS] publicou 2103.00 no blackboard (pool: 5, t=0.014000s)
+[RVNS] publicou 2104.00 no blackboard (pool: 5, t=0.016000s)
+[RVNS] publicou 2107.00 no blackboard (pool: 5, t=0.026000s)
+[Tabu Search] publicou 2102.00 no blackboard (pool: 5, t=0.027000s)
+[Tabu Search] publicou 2100.00 no blackboard (pool: 5, t=0.063000s)
+[RVNS] publicou 2105.00 no blackboard (pool: 5, t=0.074000s)
+[Tabu Search] publicou 2101.00 no blackboard (pool: 5, t=0.090000s)
+[ACO] publicou 2057.00 no blackboard (pool: 5, t=1.257000s)
+[ACO] publicou 2043.00 no blackboard (pool: 5, t=2.517000s)
+[ACO] publicou 2017.00 no blackboard (pool: 5, t=4.367000s)
+[HHO] publicou 1701.00 no blackboard (pool: 5, t=4.476000s)
+[ACO] publicou 2015.00 no blackboard (pool: 5, t=5.216000s)
+[ACO] publicou 2009.00 no blackboard (pool: 5, t=7.927000s)
+[HHO] publicou 1703.00 no blackboard (pool: 5, t=8.707000s)
+[ACO] publicou 2002.00 no blackboard (pool: 5, t=8.783000s)
+[ACO] publicou 2000.00 no blackboard (pool: 5, t=9.639000s)
+[ACO] publicou 2004.00 no blackboard (pool: 5, t=10.532000s)
+[ACO] publicou 1693.00 no blackboard (pool: 5, t=11.386000s)
+[ACO] publicou 1683.00 no blackboard (pool: 5, t=12.234000s)
+[HHO] publicou 1712.00 no blackboard (pool: 5, t=13.165000s)
+[ACO] publicou 1698.00 no blackboard (pool: 5, t=14.034000s)
+[ACO] publicou 1696.00 no blackboard (pool: 5, t=16.084000s)
+[ACO] publicou 1660.00 no blackboard (pool: 5, t=18.029000s)
+[ACO] publicou 1679.00 no blackboard (pool: 5, t=18.921000s)
+[ACO] publicou 1688.00 no blackboard (pool: 5, t=23.702000s)
+[ACO] publicou 1680.00 no blackboard (pool: 5, t=26.778000s)
+[ACO] publicou 1687.00 no blackboard (pool: 5, t=30.344000s)
+[ACO] publicou 1675.00 no blackboard (pool: 5, t=34.268000s)
+[ACO] publicou 1674.00 no blackboard (pool: 5, t=35.113000s)
+[ACO] publicou 1670.00 no blackboard (pool: 5, t=35.955000s)
+[ACO] publicou 1665.00 no blackboard (pool: 5, t=36.940000s)
+[ACO] publicou 1668.00 no blackboard (pool: 5, t=37.816000s)
+[ACO] publicou 1666.00 no blackboard (pool: 5, t=38.660000s)
+[ACO] publicou 1661.00 no blackboard (pool: 5, t=41.251000s)
+
+Resumo individual dos agentes:
+  ACO: publicacoes=24 | consultas=44 | leituras_compartilhadas=44 | melhor=1660.00 | tempo_melhor=18.029000s
+  Tabu Search: publicacoes=6 | consultas=80 | leituras_compartilhadas=79 | melhor=2100.00 | tempo_melhor=0.063000s
+  RVNS: publicacoes=7 | consultas=80 | leituras_compartilhadas=79 | melhor=2103.00 | tempo_melhor=0.014000s
+  HHO: publicacoes=3 | consultas=8 | leituras_compartilhadas=8 | melhor=1701.00 | tempo_melhor=4.476000s
+
+Resultado
+Tempo: 41.2540s
+Melhor custo: 1660.00
+[2 1 0 0 2 0 0 0 2 0 0 0 0 0 0 0 2 0 0 0 0 1 0 0 2 0 0 0 0 2 0 0 2 0 0 2 0 0 0 0 2 1 0 1 2 1 2 0 2 0 2 0 2 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 2 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 2 0 0 0 0 0 0 2 0 0 0 0 2 0 0 0 0 0 0 0 1 0 0 0 2 0 0 0 2 0 0 0 0 0 2 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 2 0 0 2 0 0 0 0 2 2 0 0 0 0 0 0 0 2 2 1 2 0 0 0 1 0 0 0 2 2 0 0 0 0 0 2 0 0 0 0 0 0 2 2 1 2 0 2 0 0 0 0 0 0 0 0 2 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 1 0 0 2 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 2 0 0 0 0 0 2 0 2 0 0 0 2 0 2 0 0 0 2 0 0 0 0 0 1 0 2 0 2 0 2 1 2 0 2 0 0 2 0 0 0 0 0 0 2 0 0 0 0 1 0 1 0 0 0 0 0 2 0 0 2 0 0 1 0 0 2 2 0 2 0 0 0 0 0 0 0 0 0 0 0 2 2 0 0 0 1 1 0 1 2 0 0 0 0 2 0 0 0 0 2 2 0 0 0 0 0 0 2 0 0 2 0 0 0 0 0 2 0 0 0 1 2 0 0 0 0 0 0 2 0 0 0 0 0 1 0 0 2 2 0 1 0 0 0 0 0 0 0 0 0 2 2 0 0 0 0 0 2 0 0 0 0 1 0 0 0 0 2 0 0 2 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 2 0 0 0 0 0 1 0 2 0 0 0 0 0 0 0 0 2 0 2 0 0 0 0 2 2 2 0 0 0 0 0 0 0 0 2 0 2 0 0 0 0 1 1 2 0 2 0 0 2 0 0 0 0 2 0 0 2 0 2 2 0 0 0 0 0 0 2 1 0 1 0 0 0 0 2 0 0 0 0 0 1 0 2 0 0 0 0 0 0 0 0 0 2 0 0 0 2 0 0 0 0 0 0 0 0 1 2 0 0 0 2 0 0 2 0 0 0 2 0 2 0 0 0 0 0 2 0 1 0 2 0 0 1 2 0 0 2 0 2 0 0 0 0 0 1 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 2 0 0 0 1 2 0 0 2 0 0 2 2 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 1 0 2 1 0 2 0 2 0 0 0 1 0 0 0 0 0 0 1 0 2 2 0 2 0 0 2 1 0 0 0 0 2 0 0 2 0 0 2 1 0 2 0 0 0 2 0 0 0 0 2 2 0 1 2 2 0 0 0 0 2 0 0 0 0 0 0 2 0 2 0 0 0 1 0 0 1 1 2 0 1 0 1 2 0 0 2 2 0 0 0 2 0 0 2 2 2 0 0 0 0 0 0 0 0 0 2 1 2 2 1 2 2 1 1 0 2 2 2 0 0 0 0 1 0 0 0 0 0 2 0 0 0 2 0 2 0 2 1 0 0 0 0 0 2 0 0 0 0 2 1 1 0 1 0 2 0 2 2 2 0 0 2 0 0 0 1 2 0 0 2 0 2 2 0 0 0 0 0 2 2 1 0 1 0 0 1 0 2 0 0 2 2 1 0 2 0 1 1 0 2 0 2 0 2 2 0 0 1 2 2 0 0 0 0 0 0 2 0 2 0 0 2 0 2 2 2 2 0 1 2 2 1 0 1 0 2 2 0 0 2 2 0 0 1 0 0 1 2 0 0 0 0 1 0 0 0 2 1 2 0 0 2 0 0 2 0 0 0 2 0 1 2 0 0 0 0 0 0 0 2 1 0 2 0 0 0 2 0 1 2 0 0 1 2 0 2 0 2 2 2 0 2 0 2 0 2 2 1 1 0 0 0 0 0 2 1 0 2 0 2 2 2 0 2 2 1 2 0 2 0 2 0 2 0 0 0 2 0 2 1 0 1 0 0 2 2 2 1 1 0 1 1 2 0 0 0 0 0 0 0 0 0 0 2 0 0 2 2 2 0 0 0 2 0 1 2 0 1 0 0 2 0 0 1 0 2 0 2 1 2 2 1 2 2 0 1 1 0 0 1 2 2 1 1 2 2 2 0 0 0 2 0 2 0 2 1 0 2 2 0 0 2 0 0 2 2 2 2 2 2 2 0 0 0 0 2 0 1 2 1 0 2 0 0 0 0 0 2 1 1 1 2 0 2 0 2 2 2 0 2 2 2 2 2 2 2 1 2 0 2 0 0 2 0 0 0 2 0 1 2 2 0 1 0 0 0 2 0 0 1 0 1 1 0 2 2 0 2 0 2 0 0 0 1 1 2 2 2 2 0 0 1 2 0 2 2 1 0 0 2 2 0 2 2 1 0 1 0 2 0 1 1 2 2 1 0 2 0 2 2 0 2 2 2 2 0 2 1 2 1 0 0 2 0 0 2 0 2 0 1 2 2 0 0 0 0 2 1 0 0 2 2 0 0 2 0 2 2 0 2 0 1 2 0 2 2 2 2 0 0 2 2 0 2 2 2 2 0 2 1 0 2 2 0 2 2 2 2 0 0 2 2 2 2 2 2 0 0 0 2 1 1 2 2 0 2 2 0 2 2 2 1 2 0 0 2 2 2 2 0 2 2 2 1 1 0 2 2 0 2 0 0 2 1 0 2 2 0 0 2 2 0 2 2 2 0 2 2 2 2 0 1 2 2 1 1 2 1 2 2 2 2 0 0 2 0 2 2 2 2 2 2 2 2 0 2 0 0 1 2 2 2 2 1 1 2 2 2 2 0 2 2 2 1 2 2 2 2 0 2 1 0 2 2 2 2 0 2 2 0 2 2 0 1 0 2 2 0 0 2 2 2 1 2 0 0 0 2 0 2 2 0 0 2 1 2 0 2 0 0 2 2 0 1 0 0 2 2 2 1 2 2 0 2 0 2 1 2 0 0 0 0 2 2 2 2 2 0 2 0 1 1 2 2 2 2 2 2 0 2 1 2 0 1 1 1 2 0 2 2 1 2 2 2 2 0 1 2 0 1 2 2 1 2 0 0 1 2 1 0 0 0 1 0 0 2 0 2 2 0 2 2 0 2 2 2 2 2 2 1 0 1 1 0 2 2 2 0 1 2 0 2 2 0 2 2 2 0 2 0 0 2 2 2 2 2 1 0 2 2 2 2 1 2 2 2 0 2 0 1 1 2 2 1 0 2 2 2 2 2 2 2 0 0 2 1 2 2 2 0 0 2 1 2 2 0 2 2 1 2 1 2 0 1 2 1 2 2 0 2 2 2 1 0 2 0 2 2 2 1 2 2 2 2 0 2 1 2 0 1 2 1 0 1 0 2 1 2 1 1 0 2 2 2 2 2 0 2 0 0 1 2 1 2 2 0 2 2 2 2 0 2 1 2 2 2 2 2 2 2 1 2 0 0 0 2 2 2 0 1 2 2 2 2 0 2 0 2 0 0 1 2 2 0 2 1 2 2 2 1 1 1 0 2 2 0 2 2 2 2 0 1 2 2 0 2 2 0 0 2 2 0 2 2 2 2 2 2 2 2 2 2 1 2 2 2 0 0 2 2 2 2 2 2 2 2 2 0 2 2 2 2 2 2 2 0 2 1 2 2 2 2 0 0 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 0 0 0 2 2 1 1 1 2 2 2 0 2 0 2 2 2 1 2 0 2 2 1 2 1 2 2 1 2 2 2 1 2 2 2 2 2 2 2 2 2 0 1 2 2 2 0 2 1 2 2 2 1 2 2 2 2 2 2 2 2 0 2 1 2 2 2 2 2 2 2 0 2 2 2 0 2 2 1 0 2 1 0 2 0 2 2 2 1 2 2 2 2 2 0 0 0 1 2 2 2 2 2 1 0 2 1 1 2 2 2 2 1 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 1 1 2 2 2 2 2 0 2 2 1 2 2 || fitness: 1689]
+[VALIDACAO TRD] Status: OK (Solucao respeita todas as restricoes!)
+
+Pool final (5 solucoes):
+ 1. 1660.00 | origem: ACO
+ 2. 1661.00 | origem: ACO
+ 3. 1665.00 | origem: ACO
+ 4. 1666.00 | origem: ACO
+ 5. 1668.00 | origem: ACO
+
+Coordenacao autonoma:
+Publicacoes aceitas: 40
+Consultas ao blackboard: 212
+Consultas com solucao compartilhada: 210
+Tempo ate melhor solucao: 18.029000s

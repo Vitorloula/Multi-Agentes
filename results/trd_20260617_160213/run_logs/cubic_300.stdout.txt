@@ -1,0 +1,54 @@
+Carregando grafo de D:\Multi Agentes\total_rd_brkga\data\edges\Random cubic graphs\cubic_300.txt com 300 vertices e 450 arestas (densidade: 0.0100334)...
+Usando representacao com lista de adjacencia (grafo esparso).
+Sistema multiagentes para Total Roman Domination (TRD)
+
+
+Agentes autonomos:
+  - ACO: exploracao global e injecao de solucoes compartilhadas
+  - Tabu Search: intensificacao local sobre solucoes promissoras
+  - RVNS: diversificacao por vizinhancas variaveis
+  - HHO: convergencia guiada pela melhor solucao compartilhada
+[RVNS] publicou 351.00 no blackboard (pool: 1, t=0.003000s)
+[Tabu Search] publicou 346.00 no blackboard (pool: 2, t=0.003000s)
+[Tabu Search] publicou 345.00 no blackboard (pool: 3, t=0.005000s)
+[RVNS] publicou 350.00 no blackboard (pool: 4, t=0.005000s)
+[Tabu Search] publicou 344.00 no blackboard (pool: 5, t=0.007000s)
+[RVNS] publicou 347.00 no blackboard (pool: 5, t=0.008000s)
+[RVNS] publicou 348.00 no blackboard (pool: 5, t=0.013000s)
+[Tabu Search] publicou 343.00 no blackboard (pool: 5, t=0.037000s)
+[ACO] publicou 309.00 no blackboard (pool: 5, t=0.852000s)
+[HHO] publicou 271.00 no blackboard (pool: 5, t=0.907000s)
+[ACO] publicou 307.00 no blackboard (pool: 5, t=1.584000s)
+[HHO] publicou 270.00 no blackboard (pool: 5, t=1.840000s)
+[ACO] publicou 305.00 no blackboard (pool: 5, t=2.331000s)
+[HHO] publicou 263.00 no blackboard (pool: 5, t=2.882000s)
+[ACO] publicou 268.00 no blackboard (pool: 5, t=3.182000s)
+[ACO] publicou 275.00 no blackboard (pool: 5, t=4.195000s)
+[ACO] publicou 267.00 no blackboard (pool: 5, t=6.826000s)
+[ACO] publicou 262.00 no blackboard (pool: 5, t=12.759000s)
+[HHO] publicou 256.00 no blackboard (pool: 5, t=14.963000s)
+
+Resumo individual dos agentes:
+  ACO: publicacoes=7 | consultas=12 | leituras_compartilhadas=12 | melhor=262.00 | tempo_melhor=12.759000s
+  Tabu Search: publicacoes=4 | consultas=80 | leituras_compartilhadas=79 | melhor=343.00 | tempo_melhor=0.037000s
+  RVNS: publicacoes=4 | consultas=80 | leituras_compartilhadas=79 | melhor=343.00 | tempo_melhor=0.037000s
+  HHO: publicacoes=4 | consultas=8 | leituras_compartilhadas=8 | melhor=256.00 | tempo_melhor=14.963000s
+
+Resultado
+Tempo: 15.8120s
+Melhor custo: 256.00
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 1 0 0 2 0 0 2 0 2 0 0 0 0 2 2 0 0 0 0 0 0 2 0 0 0 0 2 0 0 0 0 1 2 1 0 0 0 0 1 2 0 0 0 2 2 2 0 0 1 2 1 0 0 0 0 1 0 0 2 2 0 0 2 1 1 2 0 0 0 0 2 0 2 2 0 0 0 2 2 2 1 0 2 1 0 0 2 0 2 0 1 2 2 2 0 0 2 0 1 1 2 2 1 1 0 2 2 2 2 0 1 2 0 1 0 2 2 2 1 0 2 0 0 2 2 2 1 0 2 2 2 2 2 0 0 2 0 2 0 2 0 2 2 2 0 2 0 2 2 2 2 0 2 2 1 2 2 2 2 2 2 2 2 0 2 2 1 2 2 2 2 2 2 2 2 1 2 2 1 2 2 2 2 2 2 2 2 0 0 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 0 2 2 || fitness: 265]
+[VALIDACAO TRD] Status: OK (Solucao respeita todas as restricoes!)
+
+Pool final (5 solucoes):
+ 1. 256.00 | origem: HHO
+ 2. 262.00 | origem: ACO
+ 3. 263.00 | origem: HHO
+ 4. 267.00 | origem: ACO
+ 5. 268.00 | origem: ACO
+
+Coordenacao autonoma:
+Publicacoes aceitas: 19
+Consultas ao blackboard: 180
+Consultas com solucao compartilhada: 178
+Tempo ate melhor solucao: 14.963000s

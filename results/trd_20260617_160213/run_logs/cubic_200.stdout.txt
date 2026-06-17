@@ -1,0 +1,51 @@
+Carregando grafo de D:\Multi Agentes\total_rd_brkga\data\edges\Random cubic graphs\cubic_200.txt com 200 vertices e 300 arestas (densidade: 0.0150754)...
+Usando representacao com lista de adjacencia (grafo esparso).
+Sistema multiagentes para Total Roman Domination (TRD)
+
+
+Agentes autonomos:
+  - ACO: exploracao global e injecao de solucoes compartilhadas
+  - Tabu Search: intensificacao local sobre solucoes promissoras
+  - RVNS: diversificacao por vizinhancas variaveis
+  - HHO: convergencia guiada pela melhor solucao compartilhada
+[Tabu Search] publicou 222.00 no blackboard (pool: 1, t=0.011000s)
+[RVNS] publicou 233.00 no blackboard (pool: 2, t=0.011000s)
+[RVNS] publicou 232.00 no blackboard (pool: 3, t=0.013000s)
+[RVNS] publicou 221.00 no blackboard (pool: 4, t=0.014000s)
+[RVNS] publicou 231.00 no blackboard (pool: 5, t=0.020000s)
+[RVNS] publicou 230.00 no blackboard (pool: 5, t=0.023000s)
+[HHO] publicou 179.00 no blackboard (pool: 5, t=0.829000s)
+[ACO] publicou 202.00 no blackboard (pool: 5, t=0.958000s)
+[HHO] publicou 176.00 no blackboard (pool: 5, t=1.628000s)
+[ACO] publicou 182.00 no blackboard (pool: 5, t=1.743000s)
+[ACO] publicou 183.00 no blackboard (pool: 5, t=2.470000s)
+[HHO] publicou 178.00 no blackboard (pool: 5, t=3.274000s)
+[ACO] publicou 180.00 no blackboard (pool: 5, t=3.861000s)
+[ACO] publicou 181.00 no blackboard (pool: 5, t=5.365000s)
+[ACO] publicou 167.00 no blackboard (pool: 5, t=6.072000s)
+[ACO] publicou 174.00 no blackboard (pool: 5, t=6.752000s)
+
+Resumo individual dos agentes:
+  ACO: publicacoes=7 | consultas=10 | leituras_compartilhadas=10 | melhor=167.00 | tempo_melhor=6.072000s
+  Tabu Search: publicacoes=1 | consultas=80 | leituras_compartilhadas=79 | melhor=221.00 | tempo_melhor=0.016000s
+  RVNS: publicacoes=5 | consultas=80 | leituras_compartilhadas=79 | melhor=221.00 | tempo_melhor=0.014000s
+  HHO: publicacoes=3 | consultas=8 | leituras_compartilhadas=8 | melhor=176.00 | tempo_melhor=1.628000s
+
+Resultado
+Tempo: 7.4570s
+Melhor custo: 167.00
+[0 2 0 2 0 0 2 2 2 0 0 0 0 2 0 0 0 0 0 0 2 0 0 2 0 0 2 0 0 0 0 0 2 2 0 0 0 0 2 0 0 1 0 0 0 0 0 1 2 2 1 2 0 0 0 0 0 0 0 0 1 0 0 0 0 0 2 0 2 0 1 0 2 0 0 0 1 2 0 0 0 2 2 1 2 0 0 1 1 0 0 0 0 2 1 0 1 0 2 2 2 0 2 2 0 1 2 0 2 0 0 2 0 2 1 0 2 0 2 0 2 0 1 0 0 1 2 1 0 0 0 2 1 0 2 0 2 2 2 0 2 2 0 0 1 2 2 0 0 0 0 0 1 2 1 0 1 1 0 2 0 2 2 2 2 2 2 0 0 1 0 1 2 2 2 0 0 2 0 2 2 2 1 2 2 0 2 2 2 2 2 2 2 2 2 1 2 2 0 2 || fitness: 174]
+[VALIDACAO TRD] Status: OK (Solucao respeita todas as restricoes!)
+
+Pool final (5 solucoes):
+ 1. 167.00 | origem: ACO
+ 2. 174.00 | origem: ACO
+ 3. 176.00 | origem: HHO
+ 4. 178.00 | origem: HHO
+ 5. 179.00 | origem: HHO
+
+Coordenacao autonoma:
+Publicacoes aceitas: 16
+Consultas ao blackboard: 178
+Consultas com solucao compartilhada: 176
+Tempo ate melhor solucao: 6.072000s

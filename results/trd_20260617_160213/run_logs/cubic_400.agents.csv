@@ -1,0 +1,5 @@
+agent,publications,consultations,shared_reads,best_fitness,best_time_seconds
+ACO,9,14,14,346.000000000,10.701000214
+Tabu Search,4,80,79,431.000000000,0.019999981
+RVNS,4,80,79,431.000000000,0.027000189
+HHO,2,8,8,346.000000000,12.294000149

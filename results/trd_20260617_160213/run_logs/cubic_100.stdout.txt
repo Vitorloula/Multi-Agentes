@@ -1,0 +1,49 @@
+Carregando grafo de D:\Multi Agentes\total_rd_brkga\data\edges\Random cubic graphs\cubic_100.txt com 100 vertices e 150 arestas (densidade: 0.030303)...
+Usando representacao com lista de adjacencia (grafo esparso).
+Sistema multiagentes para Total Roman Domination (TRD)
+
+
+Agentes autonomos:
+  - ACO: exploracao global e injecao de solucoes compartilhadas
+  - Tabu Search: intensificacao local sobre solucoes promissoras
+  - RVNS: diversificacao por vizinhancas variaveis
+  - HHO: convergencia guiada pela melhor solucao compartilhada
+[Tabu Search] publicou 113.00 no blackboard (pool: 1, t=0.001000s)
+[RVNS] publicou 108.00 no blackboard (pool: 2, t=0.002000s)
+[Tabu Search] publicou 107.00 no blackboard (pool: 3, t=0.002000s)
+[RVNS] publicou 106.00 no blackboard (pool: 4, t=0.003000s)
+[RVNS] publicou 112.00 no blackboard (pool: 5, t=0.007000s)
+[HHO] publicou 87.00 no blackboard (pool: 5, t=0.475000s)
+[ACO] publicou 96.00 no blackboard (pool: 5, t=0.732000s)
+[ACO] publicou 97.00 no blackboard (pool: 5, t=1.550000s)
+[HHO] publicou 85.00 no blackboard (pool: 5, t=1.635000s)
+[HHO] publicou 89.00 no blackboard (pool: 5, t=2.311000s)
+[HHO] publicou 93.00 no blackboard (pool: 5, t=2.979000s)
+[HHO] publicou 86.00 no blackboard (pool: 5, t=3.774000s)
+[ACO] publicou 88.00 no blackboard (pool: 5, t=3.791000s)
+[HHO] publicou 84.00 no blackboard (pool: 5, t=4.486000s)
+
+Resumo individual dos agentes:
+  ACO: publicacoes=3 | consultas=8 | leituras_compartilhadas=8 | melhor=88.00 | tempo_melhor=3.791000s
+  Tabu Search: publicacoes=2 | consultas=80 | leituras_compartilhadas=79 | melhor=106.00 | tempo_melhor=0.006000s
+  RVNS: publicacoes=3 | consultas=80 | leituras_compartilhadas=79 | melhor=106.00 | tempo_melhor=0.003000s
+  HHO: publicacoes=6 | consultas=8 | leituras_compartilhadas=8 | melhor=84.00 | tempo_melhor=4.486000s
+
+Resultado
+Tempo: 5.7320s
+Melhor custo: 84.00
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 0 0 2 0 2 0 2 2 0 0 2 0 0 0 2 0 0 2 0 2 0 1 0 0 0 2 0 2 0 2 0 0 0 0 0 0 0 0 0 2 2 0 2 2 2 0 2 0 0 2 0 2 0 2 2 0 2 0 2 2 2 2 2 2 1 0 1 2 1 2 2 2 2 0 2 2 2 2 2 || fitness: 86]
+[VALIDACAO TRD] Status: OK (Solucao respeita todas as restricoes!)
+
+Pool final (5 solucoes):
+ 1. 84.00 | origem: HHO
+ 2. 85.00 | origem: HHO
+ 3. 86.00 | origem: HHO
+ 4. 87.00 | origem: HHO
+ 5. 88.00 | origem: ACO
+
+Coordenacao autonoma:
+Publicacoes aceitas: 14
+Consultas ao blackboard: 176
+Consultas com solucao compartilhada: 174
+Tempo ate melhor solucao: 4.486000s
