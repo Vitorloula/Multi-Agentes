@@ -5,8 +5,10 @@
 
 #include "core/blackboard.h"
 
+#include <float.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /**
@@ -45,14 +47,20 @@ void blackboard_init(blackboard *bb) {
   bb->total_publications = 0;
   bb->total_consultations = 0;
   bb->shared_solution_reads = 0;
+  bb->best_fitness = DBL_MAX;
+  bb->best_time_seconds = 0.0;
   omp_init_lock(&bb->lock);
 }
 
 void blackboard_destroy(blackboard *bb) { omp_destroy_lock(&bb->lock); }
 
 int blackboard_publish(blackboard *bb, const double *keys, double fitness,
-                       const char *agent_name) {
+                       const char *agent_name, double elapsed_seconds,
+                       int *new_global_best) {
   omp_set_lock(&bb->lock);
+  if (new_global_best != NULL) {
+    *new_global_best = 0;
+  }
 
   if (!is_diverse(bb, fitness)) {
     omp_unset_lock(&bb->lock);
@@ -79,8 +87,27 @@ int blackboard_publish(blackboard *bb, const double *keys, double fitness,
 
   if (updated) {
     bb->total_publications++;
-    printf("[%s] publicou %.2f no blackboard (pool: %d)\n", agent_name,
-           fitness, bb->count);
+    if (bb->pool[0].fitness < bb->best_fitness) {
+      bb->best_fitness = bb->pool[0].fitness;
+      bb->best_time_seconds = elapsed_seconds;
+      if (new_global_best != NULL) {
+        *new_global_best = 1;
+      }
+    }
+
+    printf("[%s] publicou %.2f no blackboard (pool: %d, t=%.6fs)\n",
+           agent_name, fitness, bb->count, elapsed_seconds);
+
+    const char *convergence_path = getenv("MA_CONVERGENCE_FILE");
+    if (convergence_path != NULL && convergence_path[0] != '\0') {
+      FILE *convergence = fopen(convergence_path, "a");
+      if (convergence != NULL) {
+        fprintf(convergence, "%.9f,%s,%.9f,%.9f,%d,%d\n", elapsed_seconds,
+                agent_name, fitness, bb->pool[0].fitness, bb->count,
+                new_global_best != NULL ? *new_global_best : 0);
+        fclose(convergence);
+      }
+    }
   }
 
   omp_unset_lock(&bb->lock);

@@ -3,3 +3,5 @@ Debug
 .cache/
 compile_commands.json
 docs/doxygen/
+__pycache__/
+*.pyc

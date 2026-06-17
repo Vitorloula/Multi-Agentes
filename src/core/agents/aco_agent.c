@@ -7,8 +7,12 @@
 
 void aco_agent_run(agent_context *ctx) {
   hscopt_aco_ctx *aco =
-      hscopt_aco_create(PROBLEM_SIZE, 20, 10, ctx->max_global_iterations, 1,
-                        0.1, 1.0, ctx->decoder, ctx->dctx, &ctx->rng);
+      hscopt_aco_create(PROBLEM_SIZE, ctx->params->aco_ant_count,
+                        ctx->params->aco_candidate_count,
+                        ctx->max_global_iterations, 1,
+                        ctx->params->aco_evaporation,
+                        ctx->params->aco_pheromone_weight, ctx->decoder,
+                        ctx->dctx, &ctx->rng);
   if (aco == NULL) {
     agent_request_stop(ctx);
     return;

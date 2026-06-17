@@ -5,7 +5,7 @@
  * @file config.h
  * @brief Parametros globais do experimento multiagentes.
  *
- * Os valores podem ser sobrescritos pelo CMake usando as opcoes de RCMPSP,
+ * Os valores podem ser sobrescritos pelo CMake usando `MA_TRD_MAX_VERTICES`,
  * `MA_POOL_SIZE` e `MA_MAX_GLOBAL_ITERATIONS`.
  */
 
@@ -72,8 +72,8 @@
 /**
  * @brief Quantidade de chaves aleatorias usadas pelo problema principal.
  *
- * O decoder RCMPSP usa `2n` chaves: as primeiras `n` sao prioridades das
- * atividades e as ultimas `n` definem atrasos de escalonamento.
+ * Para TRD, este valor e o numero maximo de vertices aceito pelo programa.
+ * O decoder usa apenas os primeiros `graph.order` genes.
  */
 #ifndef PROBLEM_SIZE
 #if defined(ACTIVE_PROBLEM_TSP)

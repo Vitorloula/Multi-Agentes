@@ -1,13 +1,31 @@
 # multi-agentes
 
-Sistema multiagentes cooperativo para otimizacao combinatoria com decoders alternaveis. O problema padrao e o **TSP**, e tambem ha suporte ao **RCMPSP**.
+Sistema multiagentes cooperativo para otimizacao combinatoria usando o decoder
+TRD (Total Roman Domination) sobre grafos em lista de adjacencia.
 
-Os agentes executam em paralelo com OpenMP e cooperam indiretamente por um blackboard compartilhado.
+Os agentes executam em paralelo com OpenMP e cooperam indiretamente por um
+blackboard compartilhado. Todas as metaheuristicas usam o mesmo decoder ativo
+por meio da assinatura `hscopt_decoder_fn` da biblioteca `hscopt`.
 
 ## documentacao
 
 - [arquitetura do sistema](arquitetura_sistema.md)
 - [funcionamento do processo](explicacao_processo.md)
+
+## formato do grafo
+
+Coloque as instancias de teste na pasta `data/`. O programa recebe um
+arquivo de arestas, com dois inteiros por linha:
+
+```text
+10 20
+20 30
+30 10
+```
+
+A leitura normaliza os ids originais para vertices sequenciais `0..n-1`,
+remove self-loops e remove arestas duplicadas tratando o grafo como nao
+direcionado.
 
 ## requisitos
 
@@ -26,69 +44,84 @@ git submodule update --init --recursive
 
 ## compilando com mise
 
-O TSP e o decoder padrao:
-
 ```sh
 mise run build
 mise run run
 ```
 
-Para selecionar explicitamente o problema:
-
-```sh
-mise run run:tsp
-mise run run:rcmpsp
-```
-
-Tarefas disponiveis:
-
-```sh
-mise run configure
-mise run configure:tsp
-mise run configure:rcmpsp
-mise run build
-mise run build:tsp
-mise run build:rcmpsp
-mise run docs
-mise run clean
-```
+A tarefa `run` usa o grafo de exemplo em `data/trd_graph.txt`.
 
 ## compilando sem mise
 
-Configurar e compilar com o TSP:
-
 ```sh
-cmake -S . -B build -DMA_PROBLEM=tsp
+cmake -S . -B build
 cmake --build build
-./build/multi_agentes
+./build/multi_agentes data/trd_graph.txt
 ```
 
-Configurar e compilar com o RCMPSP:
+Para usar outro grafo:
 
 ```sh
-cmake -S . -B build -DMA_PROBLEM=rcmpsp
-cmake --build build
-./build/multi_agentes
+./build/multi_agentes caminho/para/grafo.txt
+```
+
+## experimentos em lote
+
+Para rodar todas as instancias da pasta `data/`, com 30 execucoes independentes
+por instancia e limite cooperativo de 15 minutos por execucao:
+
+```sh
+python3 scripts/run_experiments.py
+```
+
+O script detecta automaticamente o maior numero de vertices nas instancias e
+reconfigura o CMake com `MA_TRD_MAX_VERTICES` adequado antes de compilar.
+
+Saidas principais:
+
+- `raw_runs.csv`: dados de cada execucao independente.
+- `agent_metrics.csv`: publicacoes, consultas e melhor valor por agente.
+- `convergence_events.csv`: eventos aceitos no blackboard para curvas de convergencia.
+- `convergence_summary.csv`: curva media amostrada por instancia.
+- `summary.csv`: resumo agregado por instancia.
+- `comparison_table.csv/.tex`: tabela PLI/AG/Blackboard.
+- `stability_table.csv/.tex`: tabela de estabilidade.
+- `cooperation_table.csv/.tex`: indicadores de cooperacao.
+
+Para informar valores de PLI, AG ou melhor conhecido, passe um CSV com coluna
+`instance` e, opcionalmente, `z_pli`, `t_pli`, `z_ag`, `t_ag`, `z_best`:
+
+```sh
+python3 scripts/run_experiments.py --reference-csv referencias.csv
 ```
 
 ## opcoes principais do cmake
 
 | opcao | padrao | descricao |
 | :--- | :--- | :--- |
-| `MA_PROBLEM` | `tsp` | decoder ativo: `tsp` ou `rcmpsp` |
-| `MA_N_CITIES` | `50` | numero de cidades do TSP |
-| `MA_N_PROJECTS` | `4` | numero de projetos do RCMPSP |
-| `MA_PROJECT_REAL_ACTIVITIES` | `8` | atividades reais por projeto no RCMPSP |
-| `MA_N_RESOURCES` | `3` | recursos renovaveis do RCMPSP |
+| `MA_TRD_MAX_VERTICES` | `128` | numero maximo de vertices aceito pelo decoder TRD |
 | `MA_POOL_SIZE` | `5` | tamanho da pool do blackboard |
 | `MA_MAX_GLOBAL_ITERATIONS` | `80` | limite de iteracoes dos agentes |
 
 Exemplo:
 
 ```sh
-cmake -S . -B build -DMA_PROBLEM=tsp -DMA_N_CITIES=100
+cmake -S . -B build -DMA_TRD_MAX_VERTICES=500
 cmake --build build
+./build/multi_agentes caminho/para/grafo.txt
 ```
+
+## adaptador de decoder
+
+O decoder TRD fica dividido em duas camadas:
+
+- `trd_brkga_decode`: funcao no estilo BRKGA/random keys, recebendo cromossomo,
+  instancia e workspace.
+- `trd_decoder`: wrapper gerado por `DEFINE_HSCOPT_DECODER_ADAPTER`, adaptando
+  para a assinatura exigida pela biblioteca `hscopt`.
+
+Assim, ACO, HHO, RVNS e Tabu Search chamam a mesma funcao de biblioteca sem
+conhecer detalhes do problema.
 
 ## documentacao doxygen
 
@@ -112,4 +145,5 @@ docs/doxygen/html/index.html
 
 ## observacao sobre compile_commands
 
-O build cria um link `compile_commands.json` na raiz apontando para `build/compile_commands.json`, facilitando o uso de clangd e outras ferramentas.
+O build cria um link `compile_commands.json` na raiz apontando para
+`build/compile_commands.json`, facilitando o uso de clangd e outras ferramentas.

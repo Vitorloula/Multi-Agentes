@@ -15,6 +15,7 @@ typedef tsp_instance problem_instance;
 typedef tsp_workspace problem_workspace;
 #define PROBLEM_NAME() "TSP"
 #define PROBLEM_INIT(inst, path) tsp_create_random_instance((inst))
+#define PROBLEM_CLEAR(inst) ((void)(inst))
 #define PROBLEM_PRINT_SOLUTION(keys, inst) tsp_print_tour((keys), (inst))
 #define PROBLEM_WORKSPACE_INIT(ws, inst) tsp_workspace_init((ws))
 #define PROBLEM_WORKSPACE_CLEAR(ws) tsp_workspace_clear((ws))
@@ -32,6 +33,7 @@ typedef trd_instance problem_instance;
 typedef trd_workspace problem_workspace;
 #define PROBLEM_NAME() "Total Roman Domination (TRD)"
 #define PROBLEM_INIT(inst, path) trd_init_instance((inst), (path))
+#define PROBLEM_CLEAR(inst) trd_destroy_instance((inst))
 #define PROBLEM_PRINT_SOLUTION(keys, inst) trd_print_solution((keys), (inst))
 #define PROBLEM_WORKSPACE_INIT(ws, inst) trd_workspace_init((ws), trd_get_order((inst)))
 #define PROBLEM_WORKSPACE_CLEAR(ws) trd_workspace_clear((ws))
@@ -49,6 +51,7 @@ typedef rcmpsp_instance problem_instance;
 typedef rcmpsp_workspace problem_workspace;
 #define PROBLEM_NAME() "RCMPSP"
 #define PROBLEM_INIT(inst, path) rcmpsp_create_random_instance((inst))
+#define PROBLEM_CLEAR(inst) ((void)(inst))
 #define PROBLEM_PRINT_SOLUTION(keys, inst) rcmpsp_print_schedule((keys), (inst))
 #define PROBLEM_WORKSPACE_INIT(ws, inst) rcmpsp_workspace_init((ws))
 #define PROBLEM_WORKSPACE_CLEAR(ws) rcmpsp_workspace_clear((ws))

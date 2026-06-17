@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile_commands.json" FORCE)
 
-set(MA_PROBLEM "tsp" CACHE STRING "Active problem decoder: tsp, rcmpsp or trd")
+set(MA_PROBLEM "trd" CACHE STRING "Active problem decoder: tsp, rcmpsp or trd")
 set_property(CACHE MA_PROBLEM PROPERTY STRINGS rcmpsp tsp trd)
 set(MA_TRD_MAX_VERTICES 1000 CACHE STRING "Max vertex count for TRD")
 set(MA_N_PROJECTS 4 CACHE STRING "Number of RCMPSP projects")
@@ -24,12 +24,27 @@ math(EXPR MA_N_ACTIVITIES "2 + (${MA_N_PROJECTS} * ${MA_PROJECT_ACTIVITY_COUNT})
 if (MA_PROBLEM STREQUAL "tsp")
   set(MA_ACTIVE_PROBLEM_DEFINE ACTIVE_PROBLEM_TSP=1)
   set(MA_PROBLEM_SIZE ${MA_N_CITIES})
+  set(PROBLEM_SOURCES
+    src/core/tsp.c
+    src/core/tsp_decoder.c
+  )
 elseif (MA_PROBLEM STREQUAL "rcmpsp")
   set(MA_ACTIVE_PROBLEM_DEFINE ACTIVE_PROBLEM_RCMPSP=1)
   math(EXPR MA_PROBLEM_SIZE "2 * ${MA_N_ACTIVITIES}")
+  set(PROBLEM_SOURCES
+    src/core/rcmpsp.c
+    src/core/rcmpsp_decoder.c
+  )
 elseif (MA_PROBLEM STREQUAL "trd")
   set(MA_ACTIVE_PROBLEM_DEFINE ACTIVE_PROBLEM_TRD=1)
   set(MA_PROBLEM_SIZE ${MA_TRD_MAX_VERTICES})
+  set(PROBLEM_SOURCES
+    src/core/trd/ListGraph.cpp
+    src/core/trd/MatrixGraph.cpp
+    src/core/trd/Chromosome.cpp
+    src/core/trd/trd.cpp
+    src/core/trd/trd_decoder.cpp
+  )
 else()
   message(FATAL_ERROR "MA_PROBLEM must be 'rcmpsp', 'tsp' or 'trd'")
 endif()
@@ -54,15 +69,7 @@ add_library(multi_agentes_core STATIC
   src/core/agents/rvns_agent.c
   src/core/agents/tabu_agent.c
   src/core/blackboard.c
-  src/core/rcmpsp.c
-  src/core/rcmpsp_decoder.c
-  src/core/tsp.c
-  src/core/tsp_decoder.c
-  src/core/trd/ListGraph.cpp
-  src/core/trd/MatrixGraph.cpp
-  src/core/trd/Chromosome.cpp
-  src/core/trd/trd.cpp
-  src/core/trd/trd_decoder.cpp
+  ${PROBLEM_SOURCES}
 )
 
 target_include_directories(multi_agentes_core PUBLIC

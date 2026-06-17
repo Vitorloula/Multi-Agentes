@@ -7,6 +7,7 @@
  */
 
 #include "core/blackboard.h"
+#include "core/agents.h"
 #include "hscopt/hscopt.h"
 
 #include <stdint.h>
@@ -35,6 +36,12 @@ typedef struct {
   int *stop_criterion_met;
   /** Limite de iteracoes especifico da execucao. */
   int max_global_iterations;
+  /** Parametros configuraveis das metaheuristicas. */
+  const algorithm_params *params;
+  /** Instante inicial da execucao cooperativa, em segundos OpenMP. */
+  double run_start_time;
+  /** Limite opcional de tempo da execucao cooperativa. Zero desativa. */
+  double max_seconds;
   /** Gerador pseudoaleatorio exclusivo do agente. */
   hscopt_rng rng;
   /** Quantidade de solucoes aceitas no blackboard por este agente. */
@@ -43,6 +50,10 @@ typedef struct {
   int consultations;
   /** Quantidade de consultas que retornaram solucoes compartilhadas. */
   int shared_reads;
+  /** Melhor valor avaliado por este agente durante a execucao. */
+  double best_fitness;
+  /** Tempo ate a primeira ocorrencia do melhor valor deste agente. */
+  double best_time_seconds;
 } agent_context;
 
 /**
@@ -80,7 +91,8 @@ typedef struct {
  */
 void agent_context_init(agent_context *ctx, const agent *spec, blackboard *bb,
                         hscopt_decode_ctx *dctx, int *stop_criterion_met,
-                        int max_global_iterations);
+                        int max_global_iterations,
+                        const algorithm_params *params);
 
 /**
  * @brief Consulta a flag global de parada de forma atomica.

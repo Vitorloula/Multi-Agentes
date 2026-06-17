@@ -46,6 +46,7 @@ static void print_results(const blackboard *bb, const problem_instance *problem,
     printf("Consultas ao blackboard: %d\n", bb->total_consultations);
     printf("Consultas com solucao compartilhada: %d\n",
            bb->shared_solution_reads);
+    printf("Tempo ate melhor solucao: %.6fs\n", bb->best_time_seconds);
   } else {
     puts("Nenhuma solucao valida foi publicada no blackboard.");
   }
@@ -55,6 +56,22 @@ int main(int argc, char *argv[]) {
   problem_instance problem;
   blackboard bb;
   const int max_global_iterations = MAX_GLOBAL_ITERATIONS;
+  const algorithm_params params = {
+      .aco_ant_count = 20,
+      .aco_candidate_count = 10,
+      .aco_evaporation = 0.1,
+      .aco_pheromone_weight = 1.0,
+
+      .tabu_neighborhood_size = 30,
+      .tabu_tenure = 7,
+      .tabu_inner_iterations = 10,
+
+      .rvns_neighborhood_count = 3,
+      .rvns_inner_iterations = 8,
+
+      .hho_population_size = 15,
+      .hho_inner_iterations = 3,
+  };
 
   const char *instance_path = NULL;
 #if defined(ACTIVE_PROBLEM_TRD)
@@ -68,7 +85,9 @@ int main(int argc, char *argv[]) {
   (void)argv;
 #endif
 
-  PROBLEM_INIT(&problem, instance_path);
+  if (!PROBLEM_INIT(&problem, instance_path)) {
+    return 1;
+  }
   
 #if defined(ACTIVE_PROBLEM_TRD)
   if (problem.order == 0) {
@@ -81,24 +100,20 @@ int main(int argc, char *argv[]) {
 
   print_header();
   double start_time = omp_get_wtime();
-  int search_ok = run_multi_agent_search(&problem, &bb, max_global_iterations);
+  int search_ok =
+      run_multi_agent_search(&problem, &bb, max_global_iterations, &params);
   double end_time = omp_get_wtime();
 
   if (!search_ok) {
     fprintf(stderr, "Falha ao inicializar recursos da busca multi-agentes.\n");
     blackboard_destroy(&bb);
-#if defined(ACTIVE_PROBLEM_TRD)
-    trd_destroy_instance(&problem);
-#endif
+    PROBLEM_CLEAR(&problem);
     return 1;
   }
 
   print_results(&bb, &problem, end_time - start_time);
   blackboard_destroy(&bb);
-
-#if defined(ACTIVE_PROBLEM_TRD)
-  trd_destroy_instance(&problem);
-#endif
+  PROBLEM_CLEAR(&problem);
 
   return 0;
 }
